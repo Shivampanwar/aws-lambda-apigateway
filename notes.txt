@@ -1,0 +1,26 @@
+1. Train a model
+2. Write a lambda function which take in input and return value and also havelambda_handler 
+    function as well
+3. Create a dockerfile which load models and other stuff
+    image build using 
+        docker build -t iris_image .
+    container building using
+     docker run -it --rm -p 8080:8080 iris_image:latest
+4. test image loaclly using the url 
+5. Deploy to ECR now
+    5.1 Create a registry using
+        aws ecr create-repository --repository-name iris-registry
+        Note the repository uri in my case it is 
+        703296834220.dkr.ecr.us-east-1.amazonaws.com/iris-registry
+    5.2 Pushing docker image to repository
+        https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html
+        5.2.1Get docker authentication to the repository where I want to push the image
+            aws ecr get-login-password --region region | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.region.amazonaws.com
+        5.2.2 Tag you image with AWS ECR registry
+            find your image id 
+             docker tag ab9ca3188305 703296834220.dkr.ecr.us-east-1.amazonaws.com/iris-registry:tag
+        5.2.3 Push the image using docker push command
+            docker push 703296834220.dkr.ecr.us-east-1.amazonaws.com/iris-registry:tag
+    Check aws ecr now 
+6. Create the lambda function
+    Create the lambda function using create from 
